@@ -1,0 +1,157 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Indicadores de Logística de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-transform: uppercase;
+        }
+        tr:hover { background-color: #f1f1f1; }
+        .green { background-color: #d4edda; }
+        .lightyellow { background-color: #fff3cd; }
+        .red { background-color: #f8d7da; }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px; /* Botón más pequeño */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Fuente más pequeña */
+            transition: background-color 0.3s; /* Suaviza la transición de color */
+        }
+        button:hover { background-color: #0056b3; }
+        .ficha-tecnica { border: 2px solid #4CAF50; border-radius: 10px; padding: 10px; background-color: #fff; }
+        .ficha-tecnica td { text-align: left; }
+        .graph-container {
+            margin: 20px auto; /* Aumentar margen para centrar */
+            max-width: 800px; /* Limitar el ancho de la gráfica */
+            text-align: center; /* Centrar el contenido */
+        }
+        .acciones { /* Estilo para la columna de acciones */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .regresar {
+            display: block;
+            margin: 20px auto; /* Espacio arriba y abajo */
+            padding: 10px 20px;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s; /* Suaviza la transición de color */
+        }
+        .regresar:hover {
+            background-color: #0056b3; /* Color de fondo al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultados de Indicadores de Logística de Compras</h1>
+
+    <!-- Ficha técnica del indicador -->
+    <h2>Ficha Técnica del Indicador</h2>
+    <table class="ficha-tecnica">
+        <tbody>
+            <tr>
+                <td colspan="2"><strong>Nombre del Indicador:</strong> Cumplimiento de la cantidad solicitada vs recibida</td>
+                <td><strong>Fecha de Actualización:</strong> 19/10/2024</td>
+            </tr>
+            <tr>
+                <td colspan="3"><strong>Objetivo:</strong> Asegurar que los proveedores entreguen el 100% de los productos solicitados en cada pedido, garantizando la disponibilidad necesaria en inventario y evitando faltantes que puedan afectar la operación de la droguería.</td>
+            </tr>
+            <tr>
+                <td><strong>Aspecto a Evaluar:</strong> Cumplimiento de las entregas de proveedores</td>
+                <td><strong>Aspecto a Medir:</strong> Exactitud de la entrega en comparación con lo solicitado</td>
+                <td><strong>Meta:</strong> Lograr más del 95% de cumplimiento en las cantidades solicitadas por pedido</td>
+            </tr>
+            <tr>
+                <td><strong>Tendencia:</strong> Aumentar</td>
+                <td><strong>Límite Crítico:</strong> < 90%</td>
+                <td><strong>Riesgo:</strong> Entre 90% y 94%</td>
+            </tr>
+            <tr>
+                <td colspan="3"><strong>Interpretación:</strong> Un porcentaje más cercano al 100% indica que los proveedores están cumpliendo con las cantidades solicitadas, asegurando que el inventario se mantiene de manera eficiente. Si el porcentaje es bajo, puede haber problemas de suministro que afecten la operación de la droguería.</td>
+            </tr>
+            <tr>
+                <td><strong>Método de Cálculo:</strong> (Cantidad Recibida / Cantidad Solicitada) × 100</td>
+                <td><strong>Escala:</strong> Porcentaje</td>
+                <td><strong>Periodicidad de Recolección:</strong> Por pedido recibido (diario según frecuencia de recepción)</td>
+            </tr>
+            <tr>
+                <td><strong>Fuente de Información:</strong> Registro de pedidos y cantidades solicitadas, albaranes o notas de entrega de proveedores, sistema de gestión de inventarios de la droguería</td>
+                <td><strong>Responsable de la Elaboración:</strong> Responsable de Compras, Encargado de Inventarios</td>
+                <td><strong>Partes Interesadas:</strong> Gerencia General, Departamento de Logística, Proveedores</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Tabla de resultados -->
+    <h2>Tabla de Resultados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Proveedor</th>
+                <th>Cantidad Recibida</th>
+                <th>Cantidad Solicitada</th>
+                <th>Resultado (%)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resultado in resultados %}
+                <tr>
+                    <td>{{ resultado[0] }}</td>
+                    <td>{{ resultado[1] }}</td>
+                    <td>{{ resultado[2] }}</td>
+                    <td>{{ resultado[3] }}</td>
+                    <td class="{% if resultado[4] < 90 %}red{% elif resultado[4] >= 90 and resultado[4] < 95 %}lightyellow{% else %}green{% endif %}">{{ resultado[4] }}</td>
+                    <td class="acciones">
+                        <form action="{{ url_for('eliminar_indicador_logistica', id=resultado[0]) }}" method="post">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>              
+    </table>
+
+    <!-- Gráfica -->
+    <div class="graph-container">
+        <h2>Gráfica de Resultados</h2>
+        <div>{{ graph_html|safe }}</div>
+    </div>
+
+    <!-- Botón de regreso -->
+    <a href="{{ url_for('indicador_logistica') }}" class="regresar">Regresar a ingresar indicador</a>
+</body>
+</html>

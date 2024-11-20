@@ -1,0 +1,3 @@
+nombre_producto;proveedor;cantidad;precio_unitario;fecha_expiracion;demanda_estimada_diaria;tiempo_entrega;umbral_seguridad
+Acetaminofen;Johnson & Johnson;11;1000;2028-05-02;5;2;10
+Ibuprofeno;BASF;2;3000;2028-05-03;8;2;15

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Indicador de Rotación</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Indicador de Rotación</h1>
+    <div style="width: 80%; margin: auto;">
+        <canvas id="graficoRotacion"></canvas>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <!-- Botón para ver la ficha técnica del producto -->
+        <button id="btnFichaTecnica" style="padding: 10px 20px; background-color: #0288d1; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Ver Ficha Técnica
+        </button>
+    </div>
+
+    <script>
+        // Obtener los datos desde la API
+        fetch('/api/resultados_rotacion')
+            .then(response => response.json())
+            .then(data => {
+                const productos = data.map(d => d.producto);
+                const rotaciones = data.map(d => d.rotacion);
+
+                // Crear la gráfica
+                const ctx = document.getElementById('graficoRotacion').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar', // Cambia a 'line', 'pie', etc. según lo que prefieras
+                    data: {
+                        labels: productos,
+                        datasets: [{
+                            label: 'Rotación de Inventario',
+                            data: rotaciones,
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            },
+                            tooltip: {
+                                enabled: true
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Asignar el botón de ficha técnica
+                const btnFichaTecnica = document.getElementById('btnFichaTecnica');
+                btnFichaTecnica.addEventListener('click', () => {
+                    // Obtener el producto seleccionado del gráfico (puedes mejorar esto para que sea dinámico)
+                    const productoSeleccionado = productos[0]; // Aquí puedes ajustar para seleccionar el producto correcto
+                    window.location.href = '/ficha_tecnica/' + productoSeleccionado;  // Redirige a la página de ficha técnica
+                });
+            })
+            .catch(error => console.error('Error al obtener datos:', error));
+    </script>
+</body>
+</html>

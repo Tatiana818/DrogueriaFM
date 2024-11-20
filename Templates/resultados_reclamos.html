@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Indicadores de Reclamos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        h1, h2, h3 { text-align: center; color: #333; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #4CAF50; color: white; text-transform: uppercase; }
+        tr:hover { background-color: #f1f1f1; }
+        .green { background-color: #d4edda; }
+        .lightyellow { background-color: #fff3cd; }
+        .red { background-color: #f8d7da; }
+        button { background-color: #007BFF; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s; }
+        button:hover { background-color: #0056b3; }
+        .ficha-tecnica { border: 2px solid #4CAF50; border-radius: 10px; padding: 10px; background-color: #fff; }
+        .ficha-tecnica td { text-align: left; }
+        .acciones { display: flex; justify-content: center; align-items: center; }
+    </style>
+</head>
+<body>
+    <h1>Resultados de Indicadores de Reclamos</h1>
+
+    <!-- Ficha técnica del indicador -->
+    <h2>Ficha Técnica del Indicador</h2>
+    <table class="ficha-tecnica">
+        <tbody>
+            <tr>
+                <td colspan="2"><strong>Nombre del Indicador:</strong> Cantidad de reclamos recibidos</td>
+                <td><strong>Fecha de Actualización:</strong> 03/11/2024</td>
+            </tr>
+            <tr>
+                <td colspan="3"><strong>Objetivo:</strong> Aumentar la satisfacción de los clientes.</td>
+            </tr>
+            <tr>
+                <td><strong>Aspecto a Evaluar:</strong> Reclamos</td>
+                <td><strong>Aspecto a Medir:</strong> Calidad de Servicio</td>
+                <td><strong>Meta:</strong> < 5%</td>
+            </tr>
+            <tr>
+                <td><strong>Tendencia:</strong> Decreciente</td>
+                <td colspan="2"><strong>Método de Cálculo:</strong> (Número de quejas recibidas / Número de clientes atendidos) * 100</td>
+            </tr>
+            <tr>
+                <td colspan="3"><strong>Interpretación:</strong> A menor reclamos, mayor confianza y fidelización de los clientes con el servicio logístico.</td>
+            </tr>
+            <tr>
+                <td><strong>Escala:</strong> Porcentaje %</td>
+                <td><strong>Periodicidad de Recolección:</strong> Mensual</td>
+                <td><strong>Fuente de Información:</strong> Encuestas de satisfacción de clientes</td>
+            </tr>
+            <tr>
+                <td><strong>Responsable de la Elaboración:</strong> Departamento de Servicio al Cliente</td>
+                <td colspan="2"><strong>Partes Interesadas:</strong> Gerencia de Servicio al Cliente, Departamento de Logística, Departamento de Ventas</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Clasificación de la meta -->
+    <h3>Clasificación de la Meta</h3>
+    <table class="ficha-tecnica">
+        <tbody>
+            <tr>
+                <td class="green"><strong>Adecuado:</strong> < 5%</td>
+                <td class="lightyellow"><strong>Riesgo:</strong> Entre 5% y 9%</td>
+                <td class="red"><strong>Crítico:</strong> > 10%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Resultados de indicadores -->
+    <h2>Resultados de Indicadores</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Mes</th>
+                <th>Cantidad de Reclamos</th>
+                <th>Cantidad de Clientes</th>
+                <th>Porcentaje de Reclamos (%)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resultado in resultados %}
+            <tr>
+                <td>{{ resultado.mes }}</td>
+                <td>{{ resultado.cantidad_reclamos }}</td>
+                <td>{{ resultado.cantidad_clientes }}</td>
+                <td class="{{ resultado.color | lower }}">{{ resultado.porcentaje_reclamos | round(2) }}</td>
+                <td class="acciones">
+                    <form action="{{ url_for('eliminar_indicador_reclamos', id=resultado.id) }}" method="POST">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+    
+    <!-- Contenedor de la gráfica -->
+    <div>
+        <h3>Gráfica de Porcentaje de Reclamos</h3>
+        {{ graph_html | safe }} <!-- Aquí se inserta el HTML de la gráfica -->
+    </div>
+    
+    <a href="{{ url_for('indicador_reclamos') }}">
+        <button type="button">Regresar a Calcular Indicador</button>
+    </a>
+
+</body>
+</html>
+

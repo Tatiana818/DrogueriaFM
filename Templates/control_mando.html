@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #004aad;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .container {
+            margin-bottom: 40px;
+        }
+
+        .graph-container {
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #004aad;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: 2px solid #004aad;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-link a:hover {
+            background-color: #004aad;
+            color: white;
+        }
+
+        button {
+            background-color: #004aad;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003380;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dashboard de Control de Inventario y Ventas</h1>
+
+    <!-- Gráfico de Inventario -->
+    <div class="chart-container">
+        <canvas id="inventarioChart"></canvas>
+    </div>
+
+    <!-- Gráfico de Productos Más Vendidos -->
+    <div class="container">
+        <header>
+            <h2>Productos Más Vendidos</h2>
+        </header>
+        <div class="graph-container">
+            <!-- Aquí se debe renderizar el gráfico de productos más vendidos -->
+            {{ grafico_html | safe }}
+        </div>
+        <form action="/productos_mas_vendidos" method="get">
+            <label for="periodo">Filtrar por periodo: </label>
+            <select name="periodo" id="periodo">
+                <option value="dia" {% if periodo == 'dia' %}selected{% endif %}>Diario</option>
+                <option value="semana" {% if periodo == 'semana' %}selected{% endif %}>Semanal</option>
+                <option value="mes" {% if periodo == 'mes' %}selected{% endif %}>Mensual</option>
+            </select>
+            <button type="submit">Filtrar</button>
+        </form>
+        <a href="/historial_ventas" class="back-link">Volver al Historial de Ventas</a>
+    </div>
+
+    <!-- Gráficos de Productos Pronosticados -->
+    {% if resultados %}
+        {% for resultado in resultados %}
+            <div class="container" id="producto_{{ loop.index0 }}">
+                <h2>{{ resultado.nombre_producto }}</h2>
+                <p>Pronóstico para el próximo mes: <strong>{{ resultado.pronostico_proximo_mes }}</strong></p>
+                <div class="grafico-container" id="grafico_{{ loop.index0 }}"></div>
+                <script type="text/javascript">
+                    var graficoData = {{ resultado.grafico | safe }};
+                    Plotly.newPlot('grafico_{{ loop.index0 }}', graficoData.data, graficoData.layout, { displayModeBar: false });
+                </script>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay datos disponibles para mostrar el pronóstico de ventas.</p>
+    {% endif %}
+
+    <!-- Gráfico de la Tasa de Residuos -->
+    <div class="graph-container">
+        <h2>Visualización de la Tasa de Residuos</h2>
+        <div>{{ graph_html | safe }}</div>
+    </div>
+
+    <a href="{{ url_for('indicador_residuos') }}">
+        <button>Regresar a Calcular Indicador</button>
+    </a>
+
+    <!-- Gráfico de Resultados de Logística -->
+    <div class="graph-container">
+        <h2>Gráfica de Resultados de Logística</h2>
+        <div>{{ graph_html | safe }}</div>
+    </div>
+    <a href="{{ url_for('indicador_logistica') }}" class="back-link">Regresar a Ingresar Indicador</a>
+
+    <!-- Gráfico de Porcentaje de Reclamos -->
+    <div class="graph-container">
+        <h3>Gráfica de Porcentaje de Reclamos</h3>
+        <div>{{ graph_html | safe }}</div>
+    </div>
+    <a href="{{ url_for('indicador_reclamos') }}">
+        <button>Regresar a Calcular Indicador</button>
+    </a>
+
+    <div class="footer">
+        &copy; 2024 Dashboard de Control
+    </div>
+
+    <script>
+        // Gráfico de Inventario con Chart.js
+        const ctx = document.getElementById('inventarioChart').getContext('2d');
+        const inventarioChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ nombres|tojson }},
+                datasets: [{
+                    label: 'Cantidad en Inventario',
+                    data: {{ cantidades|tojson }},
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

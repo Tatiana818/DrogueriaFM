@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotación de Inventarios</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Rotación de Inventarios</h1>
+
+    <div>
+        <label for="producto">Producto:</label>
+        <input type="text" id="producto" placeholder="Ingrese producto">
+        <label for="mes">Mes:</label>
+        <input type="text" id="mes" placeholder="Ingrese mes (ej. Enero)">
+        <button onclick="obtenerDatos()">Obtener Datos</button>
+    </div>
+
+    <h2>Resultados de Rotación</h2>
+    <table id="tablaResultados">
+        <thead>
+            <tr>
+                <th>Mes</th>
+                <th>Rotación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se llenarán los datos -->
+        </tbody>
+    </table>
+
+    <h2>Gráfico de Rotación</h2>
+    <canvas id="graficoRotacion" width="400" height="200"></canvas>
+
+    <script>
+        function obtenerDatos() {
+            const productoSeleccionado = document.getElementById('producto').value;
+            const mesSeleccionado = document.getElementById('mes').value;
+
+            // Llamar a la API con los parámetros del producto y mes seleccionados
+            fetch(`/api/rotacion_producto_mes/${productoSeleccionado}/${mesSeleccionado}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar la tabla con los nuevos datos
+                    const tablaResultados = document.getElementById('tablaResultados').getElementsByTagName('tbody')[0];
+                    tablaResultados.innerHTML = ''; // Limpiar tabla
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${item.mes}</td><td>${item.rotacion}</td>`;
+                        tablaResultados.appendChild(row);
+                    });
+
+                    // Crear o actualizar el gráfico de dispersión
+                    const ctx = document.getElementById('graficoRotacion').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'scatter',
+                        data: {
+                            datasets: [{
+                                label: 'Rotación de Inventarios',
+                                data: data.map(d => ({ x: d.mes, y: d.rotacion })),
+                                backgroundColor: 'rgba(75, 192, 192, 1)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    type: 'category',
+                                    labels: data.map(d => d.mes)
+                                },
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

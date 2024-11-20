@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos a Reordenar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #f4f6f9; /* Fondo claro */
+            color: #2c3e50; /* Texto oscuro */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 1.5em;
+            color: #3498db;
+            margin-top: 40px;
+        }
+
+        /* Estilos de la tabla */
+        table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #dddddd;
+        }
+        th {
+            background-color: #2980b9;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        th.red-header {
+            background-color: #f8d7da; /* Rojo claro para las columnas "Cantidad a Pedir" y "Fecha de Pedido" */
+            color: #d9534f; /* Rojo más intenso para el texto */
+        }
+        td.red-cell {
+            color: #d9534f; /* Rojo suave en celdas */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Estilos de la imagen */
+        img {
+            display: block;
+            margin: 30px auto;
+            max-width: 90%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilos del botón de volver */
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-link a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .back-link a:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-boxes"></i> Lista de Productos a Reordenar</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre del Producto</th>
+                <th>Cantidad Actual</th>
+                <th>Demanda Estimada</th>
+                <th>Tiempo de Entrega (días)</th>
+                <th>Umbral de Seguridad</th>
+                <th class="red-header">Cantidad a Pedir</th>
+                <th class="red-header">Fecha de Pedido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos_a_reordenar %}
+            <tr>
+                <td>{{ producto.nombre_producto }}</td>
+                <td>{{ producto.cantidad_actual }}</td>
+                <td>{{ producto.demanda }}</td>
+                <td>{{ producto.tiempo_entrega }}</td>
+                <td>{{ producto.umbral_seguridad }}</td>
+                <td class="red-cell">{{ producto.cantidad_a_pedir }}</td>
+                <td class="red-cell">{{ producto.fecha_pedido }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Mostrar la gráfica -->
+    <h2>Gráfica de Cantidad Actual vs Cantidad a Pedir</h2>
+    <img src="data:image/png;base64,{{ grafica }}" alt="Gráfica de Productos">
+    
+    <div class="back-link">
+        <a href="/inventario"><i class="fas fa-arrow-left"></i> Volver al Inventario</a>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #004aad;
+            text-align: center;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table td {
+            padding: 10px;
+        }
+
+        table td label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #004aad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #003580;
+        }
+
+        .clear-button {
+            background-color: #d9534f;
+        }
+
+        .clear-button:hover {
+            background-color: #c9302c;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #004aad;
+            font-size: 16px;
+        }
+
+        .back-link a:hover {
+            color: #003580;
+        }
+    </style>
+    <script>
+        function clearForm() {
+            document.getElementById("productForm").reset();
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Agregar Producto</h1>
+
+    <div class="form-container">
+        <form id="productForm" action="/agregar_producto" method="POST">
+            <table>
+                <tr>
+                    <td><label for="nombre_producto">Nombre del Producto:</label></td>
+                    <td><input type="text" id="nombre_producto" name="nombre_producto" required></td>
+                </tr>
+                <tr>
+                    <td><label for="proveedor">Proveedor:</label></td>
+                    <td><input type="text" id="proveedor" name="proveedor" required></td>
+                </tr>
+                <tr>
+                    <td><label for="cantidad">Cantidad:</label></td>
+                    <td><input type="number" id="cantidad" name="cantidad" required></td>
+                </tr>
+                <tr>
+                    <td><label for="precio_unitario">Precio Unitario:</label></td>
+                    <td><input type="number" step="0.01" id="precio_unitario" name="precio_unitario" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fecha_expiracion">Fecha de Expiración:</label></td>
+                    <td><input type="date" id="fecha_expiracion" name="fecha_expiracion" required></td>
+                </tr>
+                <tr>
+                    <td><label for="demanda_estimada_diaria">Demanda Estimada (Diaria):</label></td>
+                    <td><input type="number" id="demanda_estimada_diaria" name="demanda_estimada_diaria" required></td>
+                </tr>
+                <tr>
+                    <td><label for="tiempo_entrega">Tiempo de Entrega (días):</label></td>
+                    <td><input type="number" id="tiempo_entrega" name="tiempo_entrega" required></td>
+                </tr>
+                <tr>
+                    <td><label for="umbral_seguridad">Umbral de Seguridad:</label></td>
+                    <td><input type="number" id="umbral_seguridad" name="umbral_seguridad" required></td>
+                </tr>
+            </table>
+            <div class="buttons">
+                <button type="submit">Agregar Producto</button>
+                <button type="button" class="clear-button" onclick="clearForm()">Borrar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="back-link">
+        <a href="/inventario">Volver al Inventario</a>
+    </div>
+</body>
+
+</html>

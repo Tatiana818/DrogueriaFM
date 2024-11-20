@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores de Inventario</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #004aad;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .back-link {
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #004aad;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: 2px solid #004aad;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-link a:hover {
+            background-color: #004aad;
+            color: white;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Indicadores de Inventario</h1>
+
+    <div class="chart-container">
+        <canvas id="inventarioChart"></canvas>
+    </div>
+
+    <div class="back-link">
+        <a href="/inventario">Volver al Inicio</a>
+    </div>
+
+    <div class="footer">
+        &copy; 2024 Indicadores de Inventario
+    </div>
+
+    <script>
+        // Asegúrate de que nombres y cantidades se imprimen correctamente en formato JSON
+        console.log({{ nombres|tojson }});
+        console.log({{ cantidades|tojson }});
+
+        // Obtener el contexto del lienzo donde se dibujará el gráfico
+        const ctx = document.getElementById('inventarioChart').getContext('2d');
+        
+        // Crear el gráfico usando Chart.js
+        const inventarioChart = new Chart(ctx, {
+            type: 'bar',  // Tipo de gráfico de barras
+            data: {
+                labels: {{ nombres|tojson }},  // Etiquetas para el eje X (nombres de productos)
+                datasets: [{
+                    label: 'Cantidad en Inventario',
+                    data: {{ cantidades|tojson }},  // Datos del eje Y (cantidades de productos)
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',  // Color de fondo de las barras
+                    borderColor: 'rgba(0, 123, 255, 1)',  // Color del borde de las barras
+                    borderWidth: 1  // Grosor del borde de las barras
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true  // Iniciar el eje Y en 0
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

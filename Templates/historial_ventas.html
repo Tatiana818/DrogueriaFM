@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Ventas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #f4f6f9; /* Fondo claro */
+            color: #2c3e50; /* Texto oscuro */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2980b9;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos de la tabla */
+        table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Estilos del botón */
+        .ventas-boton, .filter-form, .total-ventas, .back-button {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .ventas-boton a, .back-button a {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .ventas-boton a:hover, .back-button a:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Estilos del formulario */
+        input[type="date"], input[type="hidden"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c0392b;
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        /* Estilo del botón "Volver Arriba" */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            padding: 10px;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: none;
+            transition: background-color 0.3s;
+        }
+
+        .back-to-top:hover {
+            background-color: #2980b9;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-shopping-cart"></i> Historial de Ventas</h1>
+
+        <!-- Botón para ver productos más vendidos -->
+        <div class="ventas-boton">
+            <a href="{{ url_for('productos_mas_vendidos') }}"><i class="fas fa-chart-line"></i> Ver Productos Más Vendidos</a>
+        </div>
+
+        <!-- Formulario para filtrar por fecha -->
+        <div class="filter-form">
+            <form method="GET" action="{{ url_for('historial_ventas') }}">
+                <input type="date" name="fecha_inicio" placeholder="Fecha Inicio" required>
+                <input type="date" name="fecha_fin" placeholder="Fecha Fin" required>
+                <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
+            </form>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID Venta</th>
+                <th>Nombre del Producto</th>
+                <th>Cantidad Vendida</th>
+                <th>Valor Total</th>
+                <th>Fecha de Venta</th>
+                <th>Acciones</th>
+            </tr>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta[0] }}</td>
+                <td>{{ venta[1] }}</td>
+                <td>{{ venta[2] }}</td>
+                <td>{{ venta[3] | round(2) }}</td> <!-- Formatear a 2 decimales -->
+                <td>{{ venta[4] }}</td>
+                <td>
+                    <!-- Formulario para eliminar la venta -->
+                    <form action="{{ url_for('eliminar_venta') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="venta_id" value="{{ venta[0] }}">
+                        <input type="hidden" name="nombre_producto" value="{{ venta[1] }}">
+                        <input type="hidden" name="cantidad_vendida" value="{{ venta[2] }}">
+                        <button type="submit" class="delete-button"><i class="fas fa-trash"></i> Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Mostrar el total de ventas filtradas -->
+        <div class="total-ventas">
+            <strong>Total de Ventas: {{ total_ventas | round(2) }}</strong>
+        </div>
+
+        <!-- Botón para volver al inicio -->
+        <div class="back-button">
+            <a href="/"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
+    </div>
+
+    <!-- Botón Volver Arriba -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Droguería - Todos los derechos reservados</p>
+    </footer>
+
+    <!-- Script para mostrar el botón Volver Arriba cuando el usuario hace scroll -->
+    <script>
+        // Mostrar el botón cuando se hace scroll hacia abajo
+        window.onscroll = function() {
+            const backToTopButton = document.getElementById("backToTop");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+
+        // Funcionalidad del botón Volver Arriba
+        document.getElementById("backToTop").onclick = function() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+    </script>
+</body>
+</html>

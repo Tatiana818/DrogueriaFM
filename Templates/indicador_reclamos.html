@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Indicador de Reclamos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #f4f6f9; /* Fondo claro */
+            color: #2c3e50; /* Texto oscuro */
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            color: #2980b9;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos del formulario */
+        form {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #2980b9;
+        }
+        select, input[type="number"] {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #2980b9;
+            border-radius: 6px;
+            width: calc(100% - 24px);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        select:focus, input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #3498db;
+            transform: translateY(-2px);
+        }
+        .result-button {
+            margin-top: 20px;
+            background-color: #5cb85c; /* Color de fondo verde */
+            padding: 12px; /* Espaciado más pequeño */
+            font-size: 16px; /* Tamaño de fuente más pequeño */
+        }
+        .result-button:hover {
+            background-color: #4cae4c; /* Color de fondo verde oscuro al pasar el mouse */
+        }
+        .back-button {
+            display: inline-block; /* Para centrar el botón */
+            background-color: #87CEFA; /* Color de fondo azul claro */
+            padding: 12px; /* Espaciado más pequeño */
+            font-size: 16px; /* Tamaño de fuente más pequeño */
+            border-radius: 6px; /* Bordes redondeados */
+            text-align: center; /* Centrar texto */
+            margin-top: 20px; /* Espacio superior */
+            text-decoration: none; /* Sin subrayado */
+            color: #2c3e50; /* Color del texto */
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #00BFFF; /* Color de fondo azul más oscuro al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-clipboard-list"></i> Registrar Indicador de Reclamos</h1>
+    <form method="POST">
+        <label for="mes">Selecciona el mes:</label>
+        <select name="mes" id="mes" required>
+            <option value="" disabled selected>-- Selecciona un mes --</option>
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+        </select>
+        
+        <label for="cantidad_reclamos">Número de reclamos recibidas:</label>
+        <input type="number" name="cantidad_reclamos" id="cantidad_reclamos" required>
+        
+        <label for="cantidad_clientes">Cantidad de Clientes Atendidos:</label>
+        <input type="number" name="cantidad_clientes" id="cantidad_clientes" required>
+        
+        <button type="submit">Registrar</button>
+    </form>
+
+    <a href="{{ url_for('mostrar_resultados_reclamos') }}">
+        <button type="button" class="result-button">Ver Resultados</button>
+    </a>
+
+    <a href="/" class="back-button">Volver al Inicio</a>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>
+
+
+

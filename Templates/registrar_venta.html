@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Venta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #004aad;
+            text-align: center;
+        }
+
+        form {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+
+        label, input, select {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 8px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004aad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003080;
+        }
+
+        .clear-button {
+            background-color: #d9534f;
+        }
+
+        .clear-button:hover {
+            background-color: #c9302c;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #004aad;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .back-link a:hover {
+            background-color: #003080;
+        }
+
+        .producto-container {
+            margin-bottom: 10px;
+        }
+
+        .remove-product {
+            cursor: pointer;
+            color: red;
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+    <script>
+        function toggleFactura() {
+            const datosCliente = document.getElementById("datos_cliente");
+            const checkbox = document.getElementById("factura_checkbox");
+            datosCliente.style.display = checkbox.checked ? "block" : "none";
+        }
+
+        function agregarProducto() {
+            const productosContainer = document.getElementById("productos_container");
+            const productoHTML = `
+                <div class="producto-container">
+                    <label for="id_producto">Producto:</label>
+                    <select name="id_producto" required>
+                        {% for producto in productos %}
+                            <option value="{{ producto[0] }}">{{ producto[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="cantidad_vendida">Cantidad:</label>
+                    <input type="number" name="cantidad_vendida" min="1" required>
+                    <span class="remove-product" onclick="removerProducto(this)">Eliminar</span>
+                </div>
+            `;
+            productosContainer.insertAdjacentHTML('beforeend', productoHTML);
+        }
+
+        function removerProducto(element) {
+            element.parentElement.remove();
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Registrar Venta</h1>
+
+    <form method="POST" action="/registrar_venta">
+        <div id="productos_container">
+            <div class="producto-container">
+                <label for="id_producto">Producto:</label>
+                <select name="id_producto" required>
+                    {% for producto in productos %}
+                        <option value="{{ producto[0] }}">{{ producto[1] }}</option>
+                    {% endfor %}
+                </select>
+                <label for="cantidad_vendida">Cantidad:</label>
+                <input type="number" name="cantidad_vendida" min="1" required>
+            </div>
+        </div>
+        <button type="button" onclick="agregarProducto()">Agregar Producto</button>
+    
+        <label>
+            <input type="checkbox" id="factura_checkbox" name="factura" onclick="toggleFactura()"> ¿Desea factura?
+        </label>
+    
+        <div id="datos_cliente" style="display:none;">
+            <label for="nombre_cliente">Nombre del Cliente:</label>
+            <input type="text" name="nombre_cliente">
+            <label for="cedula_o_nit_cliente">Cédula o NIT:</label>
+            <input type="text" name="cedula_o_nit_cliente">
+            <label for="telefono_cliente">Teléfono:</label>
+            <input type="text" name="telefono_cliente">
+        </div>
+    
+        <button type="submit">Registrar Venta</button>
+    </form>
+
+    <div class="back-link">
+        <a href="/inventario">Volver al Inicio</a>
+    </div>
+
+</body>
+
+</html>

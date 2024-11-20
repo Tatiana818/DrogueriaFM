@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventarios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        main {
+            text-align: center;
+            width: 90%; /* Aumenta el ancho */
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Encabezado */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centra el contenido */
+            width: 90%; /* Aumenta el ancho a 90% */
+            padding: 20px 30px; /* Aumenta el padding para hacer el área azul más grande */
+            background: linear-gradient(135deg, #1E88E5, #1565C0);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Aumenta la sombra del borde */
+            animation: fadeIn 1s ease-out;
+            margin-bottom: 20px;
+        }
+
+        header .icono-drogueria {
+            font-size: 2.5rem; /* Tamaño del ícono */
+            margin-right: 15px;
+            color: white; /* Sin color amarillo */
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem; /* Tamaño más grande del texto */
+            font-weight: bold; /* Hacer el texto más grueso */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center; /* Asegura que el texto esté centrado */
+        }
+
+        /* Navegación con Grid para mejor alineación */
+        nav {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
+            gap: 15px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #1E88E5;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border: 2px solid #1E88E5;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        nav a:hover {
+            background-color: #1E88E5;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Asegura que el último enlace ocupe el mismo espacio que los demás */
+        @media (max-width: 768px) {
+            nav {
+                grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas más pequeñas */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Cambio del ícono por uno relacionado con la farmacia -->
+        <i class="fas fa-capsules icono-drogueria"></i> <!-- Ícono más neutro -->
+        <h1>Droguería Distrial FM</h1>
+    </header>
+
+    <main>
+        <nav>
+            <a href="/inventario">Gestión y control de Inventario</a>
+            <a href="/historial_ventas">Historial de Ventas</a>
+            <a href="/pronostico_ventas">Pronóstico de Ventas</a>
+            <a href="/indicador_residuos">Indicador Residuos</a>
+            <a href="/indicador_logistica">Indicador Proveedores</a>
+            <a href="/indicador_reclamos">Indicador Servicio al Cliente</a>
+            <a href="/resultados_rotacion">Indicador de rotación</a>
+            <a href="/control_mando">Dashborad de control</a>
+        </nav>
+    </main>
+</body>
+</html>

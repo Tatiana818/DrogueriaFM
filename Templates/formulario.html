@@ -1,0 +1,5 @@
+<select name="id_producto" required>
+    {% for producto in productos %}
+        <option value="{{ producto[0] }}">{{ producto[1] }}</option>
+    {% endfor %}
+</select>

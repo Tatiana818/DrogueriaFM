@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcular Indicador de Residuos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #f4f6f9; /* Fondo claro */
+            color: #2c3e50; /* Texto oscuro */
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 1.5em;
+            color: #3498db;
+            margin-top: 40px;
+        }
+
+        /* Estilos del formulario */
+        form {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #2980b9;
+        }
+        input, select {
+            margin-bottom: 15px;
+            padding: 12px;
+            border: 1px solid #2980b9;
+            border-radius: 8px;
+            width: calc(100% - 24px);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        /* Estilo de los botones */
+        button {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #3498db;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Botón "Ver Resultados" */
+        .result-button {
+            background-color: #2ecc71;
+            padding: 12px 20px;
+            font-size: 16px;
+            width: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        .result-button:hover {
+            background-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botón "Volver al Inicio" */
+        .back-button {
+            display: inline-block;
+            background-color: #00BFFF;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        .back-button:hover {
+            background-color: #1e90ff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos de lista */
+        ul {
+            margin-top: 20px;
+            padding-left: 0;
+            list-style-type: none;
+        }
+        li {
+            background-color: #fff;
+            border: 1px solid #dddddd;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-recycle"></i> Calcular Indicador de Residuos</h1>
+    <form method="POST" action="/indicador_residuos">
+        <label for="mes_anterior">Selecciona el mes anterior:</label>
+        <select name="mes_anterior" required>
+            <option value="" disabled selected>-- Selecciona un mes --</option>
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+        </select>
+        <label for="residuos_anterior">Residuos del mes anterior (kg):</label>
+        <input type="text" name="residuos_anterior" required>
+        
+        <label for="mes_actual">Selecciona el mes actual:</label>
+        <select name="mes_actual" required>
+            <option value="" disabled selected>-- Selecciona un mes --</option>
+            <option value="Enero">Enero</option>
+            <option value="Febrero">Febrero</option>
+            <option value="Marzo">Marzo</option>
+            <option value="Abril">Abril</option>
+            <option value="Mayo">Mayo</option>
+            <option value="Junio">Junio</option>
+            <option value="Julio">Julio</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Septiembre">Septiembre</option>
+            <option value="Octubre">Octubre</option>
+            <option value="Noviembre">Noviembre</option>
+            <option value="Diciembre">Diciembre</option>
+        </select>
+        <label for="residuos_actual">Residuos del mes actual (kg):</label>
+        <input type="text" name="residuos_actual" required>
+        
+        <button type="submit">Calcular</button>
+    </form>
+
+    <!-- Botón "Ver Resultados" -->
+    <a href="{{ url_for('mostrar_resultados') }}" class="result-button">Ver Resultados</a>
+
+    <!-- Botón "Volver al Inicio" -->
+    <a href="/" class="back-button">Volver al Inicio</a>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <footer>
+        &copy; 2024 Indicador de Residuos. Todos los derechos reservados.
+    </footer>
+</body>
+</html>
