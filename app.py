@@ -951,7 +951,4 @@ def api_rotacion_producto_mes(producto, mes):
     resultados = obtener_rotacion(producto, mes)
     return jsonify(resultados)
 if __name__ == '__main__':
-    app.run(debug=True)
-    # Render asigna un puerto dinámico que debes leer desde la variable de entorno PORT
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
